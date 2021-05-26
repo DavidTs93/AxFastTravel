@@ -1,0 +1,11 @@
+name: AxFastTravel
+main: me.DMan16.AxFastTravel.AxFastTravel
+depend: [AxUtils,Vault,AxEconomy,AxItems]
+softdepend: [WorldGuard]
+version: 1.0
+description: FastTravel for Aldreda
+author: DMan16
+api-version: 1.16
+
+commands:
+  AxFastTravel:
