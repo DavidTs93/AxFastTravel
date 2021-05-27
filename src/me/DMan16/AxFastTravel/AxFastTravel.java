@@ -48,7 +48,7 @@ public class AxFastTravel extends JavaPlugin implements CommandExecutor {
 		PluginCommand command = this.getCommand("AxFastTravel");
 		command.setExecutor(this);
 		if (FastTravelScroll == null) FastTravelScroll = new AxItem(Utils.makeItem(Material.PAPER,null,ItemFlag.values()),"fasttravel_scroll",
-				Component.translatable("item.aldreda.item.fasttravel_scroll",TextColor.color(12163839)).decoration(TextDecoration.ITALIC,false),null,null,
+				Component.translatable("item.aldreda.item.fasttravel_scroll",TextColor.color(0xB99AFF)).decoration(TextDecoration.ITALIC,false),null,null,
 				(info) -> {
 					Player player = ((PlayerInteractEvent)info.second()).getPlayer();
 					new TravelMenu(player,null, FastTravelMethod.SCROLL);
