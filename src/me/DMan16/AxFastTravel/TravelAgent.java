@@ -1,7 +1,6 @@
 package me.DMan16.AxFastTravel;
 
 import me.Aldreda.AxUtils.Utils.Utils;
-import me.DMan16.AxFastTravel.FastTravelEvent.FastTravelMethod;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.event.EventHandler;
@@ -17,6 +16,6 @@ public class TravelAgent extends Trait {
 	public void click(NPCRightClickEvent event) {
 		if (event.isCancelled() || event.getNPC() != this.getNPC() || Utils.isPlayerNPC(event.getClicker())) return;
 		event.setCancelled(true);
-		new TravelMenu(event.getClicker(),getNPC(),FastTravelMethod.AGENT);
+		new TravelMenu(event.getClicker(),getNPC(),FastTravelEvent.FastTravelMethod.AGENT);
 	}
 }

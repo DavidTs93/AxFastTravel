@@ -2,7 +2,6 @@ package me.DMan16.AxFastTravel;
 
 import me.Aldreda.AxUtils.AxUtils;
 import me.Aldreda.AxUtils.Utils.Utils;
-import me.DMan16.AxFastTravel.FastTravelEvent.FastTravelMethod;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -45,7 +44,7 @@ class Travel {
 				locationColorCoords)).append(Component.text(")",locationColorOther));
 	}
 	
-	ItemStack item(Location loc, FastTravelMethod method) {
+	ItemStack item(Location loc, FastTravelEvent.FastTravelMethod method) {
 		ItemStack item = Utils.makeItem(material,name,Arrays.asList((Component.translatable("bank.aldreda.cost",NamedTextColor.GOLD).append(Component.text(": ",
 				NamedTextColor.GOLD).append(Component.text(AxUtils.getEconomy().format(method.isFree ? 0.0D : cost(loc)))))).decoration(TextDecoration.ITALIC,false)),ItemFlag.values());
 		if (glow) item.addUnsafeEnchantment(Enchantment.DURABILITY,0);
@@ -53,7 +52,6 @@ class Travel {
 	}
 	
 	double cost(Location loc) {
-		return loc.getWorld().equals(this.location.getWorld()) ? Math.ceil(loc.distance(this.location)) * AxFastTravel.instance.getConfig().getDouble("price-per-block") :
-				AxFastTravel.instance.getConfig().getDouble("price-between-worlds");
+		return loc.getWorld().equals(this.location.getWorld()) ? Math.ceil(loc.distance(this.location)) * AxFastTravel.SQL.getPricePerBlock() : AxFastTravel.SQL.getPriceBetweenWorlds();
 	}
 }

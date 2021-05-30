@@ -3,7 +3,6 @@ package me.DMan16.AxFastTravel;
 import me.Aldreda.AxUtils.AxUtils;
 import me.Aldreda.AxUtils.Utils.ListenerInventoryPages;
 import me.Aldreda.AxUtils.Utils.Utils;
-import me.DMan16.AxFastTravel.FastTravelEvent.FastTravelMethod;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -26,10 +25,10 @@ class TravelMenu extends ListenerInventoryPages {
 	private static ItemStack border = Utils.makeItem(Material.BLACK_STAINED_GLASS_PANE,Component.empty(),ItemFlag.values());
 	
 	private Location start;
-	private FastTravelMethod method;
+	private FastTravelEvent.FastTravelMethod method;
 	private List<Travel> travels;
 	
-	TravelMenu(Player player, NPC npc, FastTravelMethod method) {
+	TravelMenu(Player player, NPC npc, FastTravelEvent.FastTravelMethod method) {
 		super(null,player,5,Component.translatable("menu.aldreda.fasttravel",NamedTextColor.DARK_GREEN).decoration(TextDecoration.ITALIC,
 				false).decoration(TextDecoration.BOLD,true),AxFastTravel.instance,npc,method);
 	}
@@ -38,7 +37,7 @@ class TravelMenu extends ListenerInventoryPages {
 		NPC start = (NPC) objs[0];
 		if (start != null && !start.hasTrait(TravelAgent.class)) start = null;
 		this.start = start == null ? this.player.getLocation().toCenterLocation() : getLanding(start);
-		this.method = (FastTravelMethod) objs[1];
+		this.method = (FastTravelEvent.FastTravelMethod) objs[1];
 		this.travels = new ArrayList<Travel>();
 		for (NPC npc : AxFastTravel.getTravelAgents()) if (npc.isSpawned() && npc != start) {
 			Material material = null;
@@ -148,11 +147,12 @@ class TravelMenu extends ListenerInventoryPages {
 		int idx = slot + 28 * (currentPage - 1) - 8 - 2 * (slot / 9);
 		Travel travel = travels.get(idx);
 		FastTravelEvent fastTravelEvent = new FastTravelEvent(player,start,travel.location,method);
-		if (method != FastTravelMethod.COMMAND && AxFastTravel.WorldGuardFastTravel != null && !AxFastTravel.WorldGuardFastTravel.isAllowedFastTravel(start)) fastTravelEvent.setCancelled(true);
+		if (method != FastTravelEvent.FastTravelMethod.COMMAND && AxFastTravel.WorldGuardFastTravel != null && !AxFastTravel.WorldGuardFastTravel.isAllowedFastTravel(start))
+			fastTravelEvent.setCancelled(true);
 		Bukkit.getServer().getPluginManager().callEvent(fastTravelEvent);
 		if (fastTravelEvent.isCancelled()) return;
 		if (method.isFree || AxUtils.getEconomy().withdrawPlayer(player,travel.cost(start)).transactionSuccess()) {
-			if (method == FastTravelMethod.SCROLL) player.getInventory().setItemInMainHand(player.getInventory().getItemInMainHand().subtract());
+			if (method == FastTravelEvent.FastTravelMethod.SCROLL) player.getInventory().setItemInMainHand(player.getInventory().getItemInMainHand().subtract());
 			player.teleport(travel.location);
 		} else player.sendMessage(Component.translatable("bank.aldreda.no_funds",NamedTextColor.RED).decoration(TextDecoration.ITALIC,false));
 	}

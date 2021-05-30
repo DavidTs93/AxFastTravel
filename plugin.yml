@@ -1,7 +1,7 @@
 name: AxFastTravel
 main: me.DMan16.AxFastTravel.AxFastTravel
-depend: [AxUtils,Vault,AxEconomy,AxItems]
-softdepend: [WorldGuard]
+depend: [AxUtils,AxEconomy]
+softdepend: [WorldGuard,AxItems]
 version: 1.0
 description: FastTravel for Aldreda
 author: DMan16
