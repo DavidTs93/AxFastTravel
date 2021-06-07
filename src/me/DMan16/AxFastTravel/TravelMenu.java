@@ -39,7 +39,7 @@ class TravelMenu extends ListenerInventoryPages {
 		this.start = start == null ? this.player.getLocation().toCenterLocation() : getLanding(start);
 		this.method = (FastTravelEvent.FastTravelMethod) objs[1];
 		this.travels = new ArrayList<Travel>();
-		for (NPC npc : AxFastTravel.getTravelAgents()) if (npc.isSpawned() && npc != start) {
+		for (NPC npc : AxFastTravel.getTravelAgents()) if (/*npc.isSpawned() && */npc != start) {
 			Material material = null;
 			Location loc = getLanding(npc);
 			if (npc.data().has("FastTravel Agent Material")) try {

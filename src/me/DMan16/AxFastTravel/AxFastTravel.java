@@ -82,9 +82,9 @@ public class AxFastTravel extends JavaPlugin implements CommandExecutor {
 		private MySQL() throws SQLException {
 			Statement statement = AxUtils.getMySQL().getConnection().createStatement();
 			DatabaseMetaData data = AxUtils.getMySQL().getConnection().getMetaData();
-			statement.execute("CREATE TABLE IF NOT EXISTS FastTravel (ID TEXT NOT NULL UNIQUE);");
+			statement.execute("CREATE TABLE IF NOT EXISTS FastTravel (ID VARCHAR(255) NOT NULL UNIQUE);");
 			if (!data.getColumns(null,null,"FastTravel","ID").next())
-				statement.execute("ALTER TABLE FastTravel ADD ID TEXT NOT NULL UNIQUE;");
+				statement.execute("ALTER TABLE FastTravel ADD ID VARCHAR(255) NOT NULL UNIQUE;");
 			if (!data.getColumns(null,null,"FastTravel","Value").next())
 				statement.execute("ALTER TABLE FastTravel ADD Value INT NOT NULL;");
 			if (!statement.executeQuery("SELECT * FROM FastTravel WHERE ID=\"Price Per Block\";").next())
