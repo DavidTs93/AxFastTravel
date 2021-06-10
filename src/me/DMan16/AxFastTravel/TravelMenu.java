@@ -39,7 +39,7 @@ class TravelMenu extends ListenerInventoryPages {
 		this.start = start == null ? this.player.getLocation().toCenterLocation() : getLanding(start);
 		this.method = (FastTravelEvent.FastTravelMethod) objs[1];
 		this.travels = new ArrayList<Travel>();
-		for (NPC npc : AxFastTravel.getTravelAgents()) if (/*npc.isSpawned() && */npc != start) {
+		for (NPC npc : AxFastTravel.getTravelAgents()) if (npc.isSpawned() && npc != start) {
 			Material material = null;
 			Location loc = getLanding(npc);
 			if (npc.data().has("FastTravel Agent Material")) try {
@@ -138,7 +138,7 @@ class TravelMenu extends ListenerInventoryPages {
 	}
 	
 	public int maxPage() {
-		return Math.min(1,(int) Math.ceil(travels.size() / 28.0));
+		return Math.max(1,(int) Math.ceil(travels.size() / 28.0));
 	}
 	
 	protected void otherSlot(InventoryClickEvent event, int slot, ItemStack slotItem) {
@@ -155,9 +155,5 @@ class TravelMenu extends ListenerInventoryPages {
 			if (method == FastTravelEvent.FastTravelMethod.SCROLL) player.getInventory().setItemInMainHand(player.getInventory().getItemInMainHand().subtract());
 			player.teleport(travel.location);
 		} else player.sendMessage(Component.translatable("bank.aldreda.no_funds",NamedTextColor.RED).decoration(TextDecoration.ITALIC,false));
-	}
-	
-	private boolean isBorder(int slot) {
-		return slot >= 0 && slot < 9 || slot >= inventory.getSize() - 9 && slot < inventory.getSize() || slot % 9 == 0 || (slot + 1) % 9 == 0;
 	}
 }

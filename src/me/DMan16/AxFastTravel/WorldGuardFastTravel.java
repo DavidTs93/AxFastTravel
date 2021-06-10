@@ -10,14 +10,13 @@ public class WorldGuardFastTravel {
 	StateFlag FastTravelFlag;
 	
 	WorldGuardFastTravel() {
-		this.FastTravelFlag = AxUtils.getWorldGuardManager().newStateFlag("FastTravelFlag",true);
+		this.FastTravelFlag = AxUtils.getWorldGuardManager().newStateFlag("allow-fast-travel",true);
 	}
 	
 	boolean isAllowedFastTravel(Location loc) {
 		if (this.FastTravelFlag == null) return true;
 		try {
-			ProtectedRegion[] regions = AxUtils.getWorldGuardManager().sortRegionsByPriority(AxUtils.getWorldGuardManager().getRegionSet(loc));
-			for (ProtectedRegion region : regions) if (region.getFlag(FastTravelFlag) == State.DENY) return false;
+			for (ProtectedRegion region : AxUtils.getWorldGuardManager().getRegions(loc)) if (region.getFlag(FastTravelFlag) == State.DENY) return false;
 		} catch (Exception e) {}
 		return true;
 	}
