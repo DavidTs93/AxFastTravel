@@ -9,3 +9,7 @@ api-version: 1.16
 
 commands:
   AxFastTravel:
+    permission: aldreda.command.fasttravel
+permissions:
+  aldreda.command.fasttravel:
+    default: op

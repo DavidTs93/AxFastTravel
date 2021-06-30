@@ -114,14 +114,14 @@ class TravelMenu extends ListenerInventoryPages {
 		else if (yaw < -180) yaw += 360;
 		int x = 0;
 		int z = 0;
+		yaw = (yaw + 180) % 360;
+		if (yaw > 180) yaw -= 360;
+		else if (yaw < -180) yaw += 360;
 		if (yaw >= -67.5 && yaw < 67.5) z = 1;
 		else if (yaw >= 112.5 || yaw < -112.5) z = -1;
 		if (yaw >= 22.5 && yaw < 157.5) x = -1;
 		else if (yaw >= -157.5 && yaw < -22.5) x = 1;
 		loc = loc.add(x,0.0,z);
-		yaw = (yaw + 180) % 360;
-		if (yaw > 180) yaw -= 360;
-		else if (yaw < -180) yaw += 360;
 		loc.setYaw(yaw);
 		return loc;
 	}

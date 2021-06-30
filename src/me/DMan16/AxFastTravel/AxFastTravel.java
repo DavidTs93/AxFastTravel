@@ -24,7 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AxFastTravel extends JavaPlugin implements CommandExecutor {
@@ -55,12 +54,14 @@ public class AxFastTravel extends JavaPlugin implements CommandExecutor {
 		if (AxUtils.getCitizensManager() != null) AxUtils.getCitizensManager().registerTrait(TravelAgent.class,"travel_agent");
 		PluginCommand command = this.getCommand("AxFastTravel");
 		command.setExecutor(this);
-		if (getServer().getPluginManager().getPlugin("AxItems") != null) new me.DMan16.AxItems.Items.AxItem(Utils.makeItem(Material.PAPER,null,ItemFlag.values()),"fasttravel_scroll",
-				Component.translatable("item.aldreda.item.fasttravel_scroll", TextColor.color(0xB99AFF)).decoration(TextDecoration.ITALIC,false),null,null,
-				(info) -> {
-					Player player = info.second().getPlayer();
-					new TravelMenu(player,null,FastTravelEvent.FastTravelMethod.SCROLL);
-				},null, Arrays.asList("FastTravel","Scroll","Teleportation","Travel")).addEnchantments(Pair.of(Enchantment.DURABILITY,0)).register();
+		if (getServer().getPluginManager().getPlugin("AxItems") != null)
+			new me.DMan16.AxItems.Items.AxItem(Utils.makeItem(Material.PAPER,null,ItemFlag.values()),"fasttravel_scroll",
+					Component.translatable("item.aldreda.item.fasttravel_scroll",TextColor.color(0xB99AFF)).decoration(TextDecoration.ITALIC,false)).
+					addEnchantments(Pair.of(Enchantment.DURABILITY,0)).
+					rightClick((info) -> {
+						Player player = info.second().getPlayer();
+						new TravelMenu(player,null,FastTravelEvent.FastTravelMethod.SCROLL);
+					}).register();
 		Utils.chatColorsLogPlugin("&fAxFastTravel &aloaded!");
 	}
 	
@@ -80,8 +81,8 @@ public class AxFastTravel extends JavaPlugin implements CommandExecutor {
 		private int defaultPriceBetweenWorlds = 10000;
 		
 		private MySQL() throws SQLException {
-			Statement statement = AxUtils.getMySQL().getConnection().createStatement();
-			DatabaseMetaData data = AxUtils.getMySQL().getConnection().getMetaData();
+			Statement statement = AxUtils.getConnection().createStatement();
+			DatabaseMetaData data = AxUtils.getConnection().getMetaData();
 			statement.execute("CREATE TABLE IF NOT EXISTS FastTravel (ID VARCHAR(255) NOT NULL UNIQUE);");
 			if (!data.getColumns(null,null,"FastTravel","ID").next())
 				statement.execute("ALTER TABLE FastTravel ADD ID VARCHAR(255) NOT NULL UNIQUE;");
@@ -97,7 +98,7 @@ public class AxFastTravel extends JavaPlugin implements CommandExecutor {
 		public int getPricePerBlock() {
 			int val = defaultPricePerBlock;
 			try {
-				Statement statement = AxUtils.getMySQL().getConnection().createStatement();
+				Statement statement = AxUtils.getConnection().createStatement();
 				ResultSet result = statement.executeQuery("SELECT * FROM FastTravel WHERE ID=\"Price Per Block\";");
 				if (result.next()) val = Math.max(0,result.getInt("Value"));
 				else statement.execute("INSERT INTO FastTravel (ID,Value) VALUES (\"Price Per Block\"," + defaultPricePerBlock + ");");
@@ -109,7 +110,7 @@ public class AxFastTravel extends JavaPlugin implements CommandExecutor {
 		public int getPriceBetweenWorlds() {
 			int val = defaultPriceBetweenWorlds;
 			try {
-				Statement statement = AxUtils.getMySQL().getConnection().createStatement();
+				Statement statement = AxUtils.getConnection().createStatement();
 				ResultSet result = statement.executeQuery("SELECT * FROM FastTravel WHERE ID=\"Price Per Block\";");
 				if (result.next()) val = Math.max(0,result.getInt("Value"));
 				else statement.execute("INSERT INTO FastTravel (ID,Value) VALUES (\"Price Between Worlds\"," + defaultPriceBetweenWorlds + ");");
